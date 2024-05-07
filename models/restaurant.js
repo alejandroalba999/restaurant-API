@@ -1,37 +1,69 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../databases/postgres');
 
-const producto = sequelize.define('producto', {
-    id_producto: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoicrement: true
-    },
-    nombre: {
+const restaurant = sequelize.define('restaurant', {
+    id: {
         type: DataTypes.STRING,
+        primaryKey: true,
+        unique: true
+    },
+    rating: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notEmpty: {
                  args: true,
                  msg: "El valor no puede ser vacio"
             },
-            len: {
-                args: [2, 20],
-                msg:'La longitud del campo debe ser mayor a 1 y menor a 20'
+            max: {
+                args: 4,
+                msg: 'The max rating is 4'
+            },
+            min: {
+                args: [0],
+                msg: 'The min rating is 0'
             }
         }
     },
-    activo: {
-        type: DataTypes.INTEGER,
-        defaultValue: 1
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    id_usuario_alta: {
-        type: DataTypes.INTEGER,
+    site: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    phone: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    street: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    city: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    state: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    lat: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+    },
+    lng: {
+        type: DataTypes.FLOAT,
         allowNull: false
     }
 }, {
-    timestamps: false,
-    tableName: 'producto'
+    timestamps: true,
+    tableName: 'restaurant'
 });
 
-module.exports = {producto}
+module.exports = { restaurant }
