@@ -7,17 +7,12 @@ const { Op } = require("sequelize");
 
 app.get('/', async (req, res) => {
     try {
-        // const nombre = req.params.nombre && req.params.nombre.toUpperCase();
-        const getProd = await restaurant.findAll({
-            //    where: {
-            //         nombre: { [Op.like]: `%${nombre}%` }
-            //     }
-        });
+        const getProd = await restaurant.findAll({});
         return res.status(200).json(getProd)
     } catch (error) {
         const errorModel = error.errors;
         if (errorModel) return res.status(400).json({ msgError: errorModel[0].message, path: errorModel[0].path })
-        return res.status(400).json()
+        return res.status(500).json({ res: 'Server Error' })
     }
 })
 app.get('/:id_restaurant', async (req, res) => {
@@ -32,7 +27,7 @@ app.get('/:id_restaurant', async (req, res) => {
     } catch (error) {
         const errorModel = error.errors;
         if (errorModel) return res.status(400).json({ msgError: errorModel[0].message, path: errorModel[0].path })
-        return res.status(400).json()
+        return res.status(500).json({ res: 'Server Error' })
     }
 })
 app.post('/', async (req, res) => {
@@ -45,26 +40,34 @@ app.post('/', async (req, res) => {
     } catch (error) {
         const errorModel = error.errors;
         if (errorModel) return res.status(400).json({ msgError: errorModel[0].message, path: errorModel[0].path })
-        return res.status(400).json()
+        return res.status(500).json({ res: 'Server Error' })
     }
 })
 app.put('/:id_restaurant', async (req, res) => {
     try {
-        const idrestaurant = req.params.id_restaurant;
+        const idRestaurant = req.params.id_restaurant;
         const body = req.body;
-        const existerestaurant = await restaurant.findOne({ where: { id_restaurant: idrestaurant } })
-        if (!existerestaurant) return res.status(400).json({ msgError: 'El id_restaurant no existe', codigo: 409 })
-        await restaurant.update({
-            nombre: body.nombre
-        }, { where: { id_restaurant: idrestaurant } })
+        const existerestaurant = await restaurant.findOne({ where: { id: idRestaurant } })
+        if (!existerestaurant) return res.status(400).json({ msgError: 'ID was not found', codigo: 409 })
+        await restaurant.update({ ...body }, { where: { id: idRestaurant } })
         return res.status(200).json({})
     } catch (error) {
         const errorModel = error.errors;
         if (errorModel) return res.status(400).json({ msgError: errorModel[0].message, path: errorModel[0].path })
-        return res.status(400).json()
+        return res.status(500).json({ res: 'Server Error' })
     }
 })
-
+app.delete('/:id_restaurant', async (req, res) => {
+    try {
+        const idRestaurant = req.params.id_restaurant;
+        await restaurant.destroy({ where: { id: idRestaurant } });
+        return res.status(200).json({ res: 'Restaurant was deleted successfully' })
+    } catch (error) {
+        const errorModel = error.errors;
+        if (errorModel) return res.status(400).json({ msgError: errorModel[0].message, path: errorModel[0].path })
+        return res.status(500).json({ res: 'Server Error' })
+    }
+})
 // app.get('/csv', async (req, res) => {
 //     const fs = require('fs');
 

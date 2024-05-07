@@ -13,7 +13,7 @@ const restaurant = sequelize.define('restaurant', {
         validate: {
             notEmpty: {
                  args: true,
-                 msg: "El valor no puede ser vacio"
+                msg: "The value not be empty"
             },
             max: {
                 args: 4,
