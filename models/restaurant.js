@@ -54,12 +54,10 @@ const restaurant = sequelize.define('restaurant', {
         allowNull: false
     },
     lat: {
-        type: DataTypes.FLOAT,
-        allowNull: false
+        type: DataTypes.FLOAT
     },
     lng: {
-        type: DataTypes.FLOAT,
-        allowNull: false
+        type: DataTypes.FLOAT
     }
 }, {
     timestamps: true,
