@@ -1,13 +1,11 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config({ path: '.env' });
-const proccEnv = process.env;
-const DB_LINK = 'postgres://restaurant_3s7i_user:svQc2cdCrNHH5ZEbdaAEOhWYF4xFUbuE@dpg-cosm24o21fec73eqbd1g-a.oregon-postgres.render.com/restaurant_3s7i?ssl=true'
+const procEnv = process.env;
 
-const sequelize = new Sequelize(DB_LINK, {
+const sequelize = new Sequelize(procEnv.URL_POSTGREST, {
   dialect: 'postgres',
   protocol: 'postgres',
   dialectOptions: {},
-  logging: false,
-  force: true
+  logging: false
 });
 module.exports = {sequelize};
